@@ -1,0 +1,135 @@
+﻿/* Base color styling. */
+body {
+    background-color: #0a0a1e;
+    color: #d7d7f2;
+}
+
+/* Character Select App */
+div#character-select-app {
+    display: none;
+}
+
+/* Character List Page Styling */
+/* Character List */
+ul.character-list {
+    list-style: none;
+    float: right;
+}
+
+/* Character Blocks */
+div.character-block {
+    border: solid 3px white;
+    width: 250px;
+    height: 70px;
+    font-size: larger;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+div.character-block:hover {
+    background-color: #5353c6;
+}
+
+div.alliance-block-background {
+    background-image: url("../img/alliance-block-bkrnd.png");
+    background-repeat: no-repeat;
+}
+
+div.horde-block-background {
+    background-image: url("../img/horde-block-bkrnd.png");
+    background-repeat: no-repeat;
+}
+
+li.character-block-buttons {
+    text-align: center;
+}
+
+/* Character Create App */
+div#character-create-app {
+    background-image: url("../img/awesomeToon.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Race Block */
+div.character-create-block {
+    width: 500px;
+    display: inline-block;
+}
+
+div.character-create-block.horde-block {
+    float: right;
+    clear: right;
+}
+
+div.race-block {
+    border: 1px solid white;
+    height: 350px;
+}
+
+div.race-block ul {
+    list-style: none;
+}
+
+div.list-block-component ul li {
+    display: flex;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 70px;
+    margin: 5px;
+    padding: 10px;
+}
+
+div.list-block-component ul li:hover {
+    background-color: #5353c6;
+}
+
+/* Class Block */
+div.class-block {
+    border: 1px solid white;
+    height: 250px;
+}
+
+div.class-block ul {
+    list-style: none;
+    display: inline-block;
+}
+
+/* Character Name Input */
+div.character-name-input-block {
+    width: 200px;
+    margin: 0 auto;
+}
+
+div.character-name-input-block h3 {
+    text-align: center;
+}
+
+div.character-name-input-block input {
+    width: 100%;
+}
+
+div.character-name-input-block a {
+    text-align: center;
+}
+
+/* General Styles */
+.selected-block {
+    background-color: #ff6600;
+}
+
+/* Buttons */
+a.character-button {
+    display: block;
+    background-color: #8e2a2a;
+    border-radius: 15px;
+    padding: 2px 10px 2px 10px;
+    margin: 5px 0px 5px 0px;
+    cursor: pointer;
+}
+
+a.character-button:hover {
+    background-color: #ad7474;
+}
