@@ -6,112 +6,69 @@
     <link rel="stylesheet" href="styles/blizz2p0.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js"></script>
 </head>
-<body>
-    <!--
-    <div ng-app="test" ng-controller="testController">
-        <h1>{{ helloWorld }}</h1>
+<body ng-app="character-app" ng-controller="app-controller">
+    <div id="character-select-app" ng-controller="character-select-controller">
+        <div ng-if="appState == appStates.select">
+            <ul class="character-list">
+                <li ng-repeat="character in characterList">
+                    <div class="character-block {{ characterBlockClass(character) }}" ng-class="{ 'selected-block': character.selected }" ng-click="characterBlockClickHandler(character.id)">
+                        <div class="character-block-name">{{ character.name }}</div>
+                        <div class="character-block-level">Level {{ character.level }}</div>
+                        <div class="character-block-race">{{ character.race }} {{ character.class }}</div>
+                    </div>
+                </li>
+                <li ng-if="characterList.length == 0">
+                    <p>Click 'New' to create a new character.</p>
+                </li>
+                <li class="character-block-buttons">
+                    <a class="character-button" ng-click="newCharacterButtonClickHandler()">New</a>
+                    <a class="character-button" ng-click="deleteCharacterButtonClickHandler()">Delete</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    -->
 
-    <div id="character-select-app">
-        <ul class="character-list">
-            <li>
-                <div class="character-block alliance-block-background">
-                    <div class="character-block-name">Tiger</div>
-                    <div class="character-block-level">Level 100</div>
-                    <div class="character-block-race">Human Warrior</div>
+    <div id="character-create-app" ng-controller="character-create-controller">
+        <div ng-if="appState == appStates.create">
+            <div class="character-create-block alliance-block">
+                <img src="img/alliance_logo.png" />
+                <div class="race-block list-block-component">
+                    <ul>
+                        <li ng-repeat="race in allianceRaces" ng-class="{ 'selected-block' : race.selected }" ng-click="raceClickHandler(race.name, 'alliance')">{{ race.name }}</li>
+                    </ul>
                 </div>
-            </li>
-            <li>
-                <div class="character-block horde-block-background selected-block">
-                    <div class="character-block-name">Madman</div>
-                    <div class="character-block-level">Level 100</div>
-                    <div class="character-block-race">Troll Mage</div>
+                <div class="class-block list-block-component">
+                    <ul ng-repeat="classCol in wowClasses" ng-if="currentFaction == 'alliance'">
+                        <li ng-repeat="class in classCol" ng-class="{ 'selected-block' : class.selected }" ng-click="classClickHandler(class.name)">{{ class.name }}</li>
+                    </ul>
                 </div>
-            </li>
-            <li class="character-block-buttons">
-                <a class="character-button">New</a>
-                <a class="character-button">Delete</a>
-            </li>
-        </ul>
-    </div>
-
-    <div id="character-create-app">
-        <div class="character-create-block alliance-block">
-            <img src="img/alliance_logo.png" />
-            <div class="race-block list-block-component">
-                <ul>
-                    <li class="selected-block">Human</li>
-                    <li>Gnome</li>
-                    <li>Dwarf</li>
-                    <li>Night Elf</li>
-                    <li>Draenei</li>
-                    <li>Worgen</li>
-                    <li>Pandaren</li>
-                </ul>
             </div>
-            <div class="class-block list-block-component">
-                <ul>
-                    <li class="selected-block">Warrior</li>
-                    <li>Paladin</li>
-                    <li>Hunter</li>
-                    <li>Monk</li>
-                </ul>
-                <ul>
-                    <li>Rogue</li>
-                    <li>Priest</li>
-                    <li>Death Knight</li>
-                    <li>Druid</li>
-                </ul>
-                <ul>
-                    <li>Shaman</li>
-                    <li>Mage</li>
-                    <li>Warlock</li>
-                    <li>Demon Hunter</li>
-                </ul>
+            <div class="character-create-block horde-block">
+                <img src="img/horde_logo.png" />
+                <div class="race-block list-block-component">
+                    <ul>
+                        <li ng-repeat="race in hordeRaces" ng-class="{ 'selected-block' : race.selected }" ng-click="raceClickHandler(race.name, 'horde')">{{ race.name }}</li>
+                    </ul>
+                </div>
+                <div class="class-block list-block-component">
+                    <ul ng-repeat="classCol in wowClasses" ng-if="currentFaction == 'horde'">
+                        <li ng-repeat="class in classCol" ng-class="{ 'selected-block' : class.selected }" ng-click="classClickHandler(class.name)">{{ class.name }}</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="character-create-block horde-block">
-            <img src="img/horde_logo.png" />
-            <div class="race-block list-block-component">
-                <ul>
-                    <li>Orc</li>
-                    <li>Troll</li>
-                    <li>Tauren</li>
-                    <li>Undead</li>
-                    <li>Blood Elf</li>
-                    <li>Goblin</li>
-                    <li>Pandaren</li>
-                </ul>
+            <div class="character-name-input-block character-block-buttons">
+                <h3 class="error" ng-if="error != null">{{ error }}</h3>
+                <h3>Name</h3>
+                <input type="text" name="character-name" ng-model="newCharacterData.name" />
+                <a class="character-button" ng-click="createNewCharacterButtonClickHandler()">Create</a>
+                <a class="character-button" ng-click="cancelNewCharacterButtonClickHandler()">Cancel</a>
             </div>
-            <div class="class-block list-block-component">
-                <ul>
-                    <li>Warrior</li>
-                    <li>Paladin</li>
-                    <li>Hunter</li>
-                    <li>Monk</li>
-                </ul>
-                <ul>
-                    <li>Rogue</li>
-                    <li>Priest</li>
-                    <li>Death Knight</li>
-                    <li>Druid</li>
-                </ul>
-                <ul>
-                    <li>Shaman</li>
-                    <li>Mage</li>
-                    <li>Warlock</li>
-                    <li>Demon Hunter</li>
-                </ul>
-            </div>
-        </div>
-        <div class="character-name-input-block character-block-buttons">
-            <h3>Name</h3>
-            <input type="text" name="character-name" />
-            <a class="character-button">Create</a>
         </div>
     </div>
 
-    <script src="scripts/controllers/testController.js"></script>
+    <script src="scripts/characterApplication.js"></script>
+    <script src="scripts/controllers/app.js"></script>
+    <script src="scripts/controllers/characterSelect.js"></script>
+    <script src="scripts/controllers/characterCreate.js"></script>
 </body>
 </html>
