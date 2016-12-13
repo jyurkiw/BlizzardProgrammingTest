@@ -1,4 +1,4 @@
-﻿characterApp.controller('character-select-controller', function ($scope, $rootScope) {
+﻿characterApp.controller('character-select-controller', function ($scope, $rootScope, CharacterAPI) {
     $scope.characterList = [];
 
     // Character block decoration function
@@ -25,34 +25,19 @@
     }
 
     $rootScope.$on('ReloadCharacterList', function (event, data) {
-        console.log('reloading character list from service');
-        
-        $scope.characterList.push({
-            'id': $scope.characterList.length + 1,
-            'name': data.name,
-            'level': '1',
-            'class': data.class,
-            'faction': data.faction
-        });
+        $scope.characterList = CharacterAPI.getCharactersForUser($scope.userData.username);
+        $scope.$apply();
     });
 
-    // Initialize test data
-    $scope.characterList.push({
-        'id': '1',
-        'name': 'Tiger',
-        'level': '100',
-        'race': 'Human',
-        'class': 'Warrior',
-        'faction': 'alliance'
-    });
-    $scope.characterList.push({
-        'id': '2',
-        'name': 'Madman',
-        'level': '100',
-        'race': 'Troll',
-        'class': 'Mage',
-        'faction': 'horde'
-    });
+    $rootScope.$on('UsernameLoaded', function () {
+        $scope.characterList = CharacterAPI.getCharactersForUser($scope.userData.username);
+        $scope.$apply();
+    })
+
+    // Utility Functions
+    function getSelectedCharacter() {
+
+    }
 
     $scope.characterList.forEach(function (character, cIndex, arr) {
         arr[cIndex].selected = false;
