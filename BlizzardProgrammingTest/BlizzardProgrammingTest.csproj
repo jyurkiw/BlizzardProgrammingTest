@@ -18,8 +18,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -116,9 +116,14 @@
     <Content Include="index.html" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="scripts\characterApplication.js" />
+    <Content Include="scripts\controllers\app.js" />
     <Content Include="scripts\controllers\characterCreate.js" />
     <Content Include="scripts\controllers\characterSelect.js" />
-    <Content Include="scripts\controllers\testController.js" />
+    <Content Include="scripts\services\characters.js" />
+    <Content Include="scripts\services\classes.js" />
+    <Content Include="scripts\services\races.js" />
+    <Content Include="scripts\services\users.js" />
     <Content Include="styles\blizz2p0.css" />
     <Content Include="Web.config" />
   </ItemGroup>

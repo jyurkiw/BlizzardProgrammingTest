@@ -1,1 +1,1 @@
-﻿characterApp = angular.module('character-app', []);
+﻿characterApp = angular.module('character-app', ['UserServices', 'CharacterServices']);
