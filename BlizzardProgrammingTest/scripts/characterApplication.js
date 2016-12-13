@@ -1,0 +1,1 @@
+﻿characterApp = angular.module('character-app', []);

@@ -6,7 +6,7 @@ body {
 
 /* Character Select App */
 div#character-select-app {
-    display: none;
+    /* display: none; */
 }
 
 /* Character List Page Styling */
@@ -118,6 +118,10 @@ div.character-name-input-block a {
 /* General Styles */
 .selected-block {
     background-color: #ff6600;
+}
+
+.error {
+    color: red;
 }
 
 /* Buttons */
