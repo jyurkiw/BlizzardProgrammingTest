@@ -7,8 +7,8 @@
     };
 
     UserAPI.getUserInformation()
-    .then(function (userData) {
-        $scope.userData.username = userData.username;
-        $rootScope.$emit('UsernameLoaded');
-    })
+        .then(function (userData) {
+            $scope.userData.username = userData.username;
+            $rootScope.$emit('UsernameLoaded');
+        });
 });

@@ -25,14 +25,20 @@
     }
 
     $rootScope.$on('ReloadCharacterList', function (event, data) {
-        $scope.characterList = CharacterAPI.getCharactersForUser($scope.userData.username);
-        $scope.$apply();
+        LoadCharacterList();
     });
 
     $rootScope.$on('UsernameLoaded', function () {
-        $scope.characterList = CharacterAPI.getCharactersForUser($scope.userData.username);
-        $scope.$apply();
-    })
+        LoadCharacterList();
+    });
+
+    function LoadCharacterList() {
+        CharacterAPI.getCharactersForUser($scope.userData.username)
+            .then(function (characterList) {
+                $scope.characterList = characterList;
+                $scope.$apply();
+            });
+    }
 
     // Utility Functions
     function getSelectedCharacter() {

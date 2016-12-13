@@ -114,14 +114,11 @@
     <Content Include="img\alliance_logo.png" />
     <Content Include="img\horde_logo.png" />
     <Content Include="index.html" />
-    <Content Include="scripts\ai.0.22.9-build00167.js" />
-    <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\characterApplication.js" />
     <Content Include="scripts\controllers\app.js" />
     <Content Include="scripts\controllers\characterCreate.js" />
     <Content Include="scripts\controllers\characterSelect.js" />
     <Content Include="scripts\services\characters.js" />
-    <Content Include="scripts\services\classes.js" />
     <Content Include="scripts\services\races.js" />
     <Content Include="scripts\services\users.js" />
     <Content Include="styles\blizz2p0.css" />
@@ -129,7 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="Controllers\CharactersController.cs" />
+    <Compile Include="Controllers\RaceClassController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

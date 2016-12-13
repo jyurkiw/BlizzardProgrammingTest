@@ -1,34 +1,37 @@
 ﻿var characterServices = angular.module('CharacterServices', []);
 
-characterServices.factory('CharacterAPI', [function() {
-    console.log('creating character list service object');
-
+characterServices.factory('CharacterAPI', ['$http', function($http) {
     var getCharactersForUser = function (username) {
-        var characterList = [];
         // Query API
+        return new Promise(function (resolve, reject) {
+            $http.get('http://localhost:53653/api/Characters/' + username)
+                .then(function (response) {
+                    resolve(response.data);
+                })
+                .catch(function (err) {
+                    reject(err);
+                });
+        });
 
-        // End query
         // Enter placeholder data (delete tomorrow vvvvvvvvvvvvv)
         // Initialize test data
-        characterList.push({
-            'id': '1',
-            'name': 'Tiger',
-            'level': '100',
-            'race': 'Human',
-            'class': 'Warrior',
-            'faction': 'alliance'
-        });
-        characterList.push({
-            'id': '2',
-            'name': 'Madman',
-            'level': '100',
-            'race': 'Troll',
-            'class': 'Mage',
-            'faction': 'horde'
-        });
+        //characterList.push({
+        //    'id': '1',
+        //    'name': 'Tiger',
+        //    'level': '100',
+        //    'race': 'Human',
+        //    'class': 'Warrior',
+        //    'faction': 'alliance'
+        //});
+        //characterList.push({
+        //    'id': '2',
+        //    'name': 'Madman',
+        //    'level': '100',
+        //    'race': 'Troll',
+        //    'class': 'Mage',
+        //    'faction': 'horde'
+        //});
         // exit placeholder data (delete tomorrow ^^^^^^^^^^^^^^)
-
-        return characterList;
     }
 
     var addCharacterForUser = function (characterData, username) {
