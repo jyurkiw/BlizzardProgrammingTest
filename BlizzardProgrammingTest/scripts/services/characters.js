@@ -12,32 +12,22 @@ characterServices.factory('CharacterAPI', ['$http', function($http) {
                     reject(err);
                 });
         });
-
-        // Enter placeholder data (delete tomorrow vvvvvvvvvvvvv)
-        // Initialize test data
-        //characterList.push({
-        //    'id': '1',
-        //    'name': 'Tiger',
-        //    'level': '100',
-        //    'race': 'Human',
-        //    'class': 'Warrior',
-        //    'faction': 'alliance'
-        //});
-        //characterList.push({
-        //    'id': '2',
-        //    'name': 'Madman',
-        //    'level': '100',
-        //    'race': 'Troll',
-        //    'class': 'Mage',
-        //    'faction': 'horde'
-        //});
-        // exit placeholder data (delete tomorrow ^^^^^^^^^^^^^^)
     }
 
     var addCharacterForUser = function (characterData, username) {
-        // Create new character
+        return new Promise(function(resolve, reject) {
+            // Create new character
+            characterData.owner = username;
 
-        return true; // Add false check tomorrow
+            $http.post('http://localhost:53653/api/Characters', characterData)
+                .then(function (response) {
+                    console.log(response);
+                    resolve(response.data);
+                })
+                .catch(function (err) {
+                    reject(err);
+                });
+        })
     }
 
     var deleteCharacterForUser = function (characterName, username) {
