@@ -9,9 +9,16 @@ using System.Web.Http.Results;
 
 namespace BlizzardProgrammingTest.Controllers
 {
+    /// <summary>
+    /// GET for Race/Class data.
+    /// </summary>
     public class RaceClassController : ApiController
     {
-        // GET: api/RaceClass
+        /// <summary>
+        /// Get data necessary to populate the create character page.
+        /// </summary>
+        /// <param name="id">The numeric id of the character to delete.</param>
+        /// <returns>Race/Class data.</returns>
         public IHttpActionResult Get(string id)
         {
             Dictionary<string, Dictionary<string, List<string>>> raceClasses = DBObject.GetRaceClass(id);

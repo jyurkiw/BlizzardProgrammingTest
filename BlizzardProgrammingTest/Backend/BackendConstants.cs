@@ -5,6 +5,11 @@ using System.Web;
 
 namespace BlizzardProgrammingTest.Backend
 {
+    /// <summary>
+    /// Constant values used by the application.
+    /// Pure static constants, because Magic Numbers and Strings
+    /// are evil.
+    /// </summary>
     public static class BackendConstants
     {
         public static class RaceClassQueryIndicies
@@ -31,6 +36,9 @@ namespace BlizzardProgrammingTest.Backend
             public const int RaceClassRowLength = 4;
             public const int CharacterRowLength = 7;
             public const string DeathKnightClassName = "Death Knight";
+            public const string RaceClassQueryPath = "bin\\Data\\raceClassJoinQuery.json";
+            public const string CharacterPath = "bin\\Data\\charactersQuery.json";
+            public const int DeathKnightMinLevelReq = 55;
         }
 
         public static class RaceClassFieldNames
