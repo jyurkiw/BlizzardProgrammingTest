@@ -1,0 +1,26 @@
+﻿[
+  [ "1", "alliance", "Human", "Warrior" ],
+  [ "2", "alliance", "Human", "Death Knight" ],
+  [ "3", "alliance", "Human", "Mage" ],
+
+  [ "4", "alliance", "Gnome", "Warrior" ],
+  [ "5", "alliance", "Gnome", "Death Knight" ],
+  [ "6", "alliance", "Gnome", "Mage" ],
+
+  [ "7", "alliance", "Worgen", "Warrior" ],
+  [ "8", "alliance", "Worgen", "Druid" ],
+  [ "9", "alliance", "Worgen", "Death Knight" ],
+  [ "10", "alliance", "Worgen", "Mage" ],
+
+  [ "11", "horde", "Orc", "Warrior" ],
+  [ "12", "horde", "Orc", "Death Knight" ],
+  [ "13", "horde", "Orc", "Mage" ],
+
+  [ "14", "horde", "Tauren", "Warrior" ],
+  [ "15", "horde", "Tauren", "Druid" ],
+  [ "16", "horde", "Tauren", "Death Knight" ],
+  [ "17", "horde", "Tauren", "Mage" ],
+
+  [ "18", "horde", "Blood Elf", "Death Knight" ],
+  [ "19", "horde", "Blood Elf", "Mage" ]
+]
