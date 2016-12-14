@@ -1,4 +1,4 @@
-﻿characterApp.controller('character-create-controller', function ($scope, $rootScope, RaceAPI, DEFAULT_FACTION, DEFAULT_RACE, DEFAULT_CLASS, ALLIANCE, HORDE, CLASS_COLUMNS, MIN_CLASS_PER_COL) {
+﻿characterApp.controller('character-create-controller', function ($scope, $rootScope, RaceAPI, CharacterAPI, DEFAULT_FACTION, DEFAULT_RACE, DEFAULT_CLASS, ALLIANCE, HORDE, CLASS_COLUMNS, MIN_CLASS_PER_COL) {
     $scope.allianceRaces = [];
     $scope.hordeRaces = [];
     $scope.wowClasses = [[], []];
@@ -91,12 +91,15 @@
             $scope.error = null;
 
             var characterData = { 'name': $scope.newCharacterData.name, 'race': getCurrentRace(), 'class': getCurrentClass(), 'faction': $scope.currentFaction };
+            CharacterAPI.addCharacterForUser(characterData, $scope.userData.username)
+                .then(function (response) {
+                    $rootScope.$emit('ReloadCharacterList', characterData);
+                });
 
             $scope.raceClickHandler(DEFAULT_RACE, DEFAULT_FACTION);
             $scope.classClickHandler(DEFAULT_CLASS);
             $scope.newCharacterData = { name: null };
 
-            $rootScope.$emit('ReloadCharacterList', characterData);
             $scope.$parent.appState = $scope.appStates.select;
         } else {
             $scope.error = "Character Name is Required.";
