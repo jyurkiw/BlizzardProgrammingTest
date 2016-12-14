@@ -31,6 +31,9 @@ namespace BlizzardProgrammingTest.Backend
             public const int Faction = 6;
         }
 
+        /// <summary>
+        /// Catch-all constants dealing with queries and other query-based opperation.
+        /// </summary>
         public static class QueryProperties
         {
             public const int RaceClassRowLength = 4;
