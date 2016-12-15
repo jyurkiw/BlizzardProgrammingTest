@@ -1,5 +1,6 @@
 ﻿characterApp = angular.module('character-app', ['UserServices', 'CharacterServices', 'RaceServices']);
 
+// Application constants
 characterApp.constant('CLASS_COLUMNS', 3);
 characterApp.constant('MIN_CLASS_PER_COL', 4);
 characterApp.constant('ALLIANCE', 'alliance');
