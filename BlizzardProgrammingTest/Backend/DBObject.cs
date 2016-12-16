@@ -6,6 +6,7 @@ using System.Web;
 using System.Runtime.Serialization;
 using BlizzardProgrammingTest.Backend.Models;
 using System.Threading.Tasks;
+using System.Runtime.Caching;
 
 namespace BlizzardProgrammingTest.Backend
 {
@@ -16,6 +17,7 @@ namespace BlizzardProgrammingTest.Backend
     public class DBObject : IDisposable
     {
         private static DBObject _instance = null;
+        private static MemoryCache _cache = MemoryCache.Default;
 
         private string raceClassQueryPath;
         private string characterQueryPath;
@@ -53,29 +55,46 @@ namespace BlizzardProgrammingTest.Backend
         /// </summary>
         private DBObject()
         {
-            lock (fileWriteKey)
+            raceClassTable = _cache[BackendConstants.CacheKeys.RaceClassKey] as List<RaceClassRowModel>;
+            characterTable = _cache[BackendConstants.CacheKeys.CharacterDataKey] as List<CharacterRowModel>;
+
+            if (raceClassTable == null || characterTable == null)
             {
-                raceClassTable = new List<RaceClassRowModel>();
-                characterTable = new List<CharacterRowModel>();
-
-                raceClassQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.RaceClassQueryPath);
-                characterQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.CharacterPath);
-
-                // Load table data from files.
-                // Load Race/Class data
-                List<string[]> raceClassDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(raceClassQueryPath));
-                foreach (string[] row in raceClassDataSet)
+                lock (fileWriteKey)
                 {
-                    raceClassTable.Add(new RaceClassRowModel(row));
+                    raceClassTable = new List<RaceClassRowModel>();
+                    characterTable = new List<CharacterRowModel>();
+
+                    raceClassQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.RaceClassQueryPath);
+                    characterQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.CharacterPath);
+
+                    // Load table data from files.
+                    // Load Race/Class data
+                    List<string[]> raceClassDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(raceClassQueryPath));
+                    foreach (string[] row in raceClassDataSet)
+                    {
+                        raceClassTable.Add(new RaceClassRowModel(row));
+                    }
+
+                    // Load character data
+                    List<string[]> characterDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(characterQueryPath));
+                    foreach (string[] row in characterDataSet)
+                    {
+                        characterTable.Add(new CharacterRowModel(row));
+                    }
                 }
 
-                // Load character data
-                List<string[]> characterDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(characterQueryPath));
-                foreach (string[] row in characterDataSet)
-                {
-                    characterTable.Add(new CharacterRowModel(row));
-                }
+                UpdateCache();
             }
+        }
+
+        public void UpdateCache()
+        {
+            CacheItemPolicy policy = new CacheItemPolicy();
+            policy.AbsoluteExpiration = DateTime.Now.AddDays(1);
+
+            _cache.Add(BackendConstants.CacheKeys.RaceClassKey, raceClassTable, policy);
+            _cache.Add(BackendConstants.CacheKeys.CharacterDataKey, characterTable, policy);
         }
 
         /// <summary>
@@ -275,7 +294,8 @@ namespace BlizzardProgrammingTest.Backend
 
             DBObject.Instance.characterTable.Add(character);
 
-            DBObject.Instance.SaveCharacterDataToFile();
+            //DBObject.Instance.SaveCharacterDataToFile();
+            DBObject.Instance.UpdateCache();
 
             return true;
         }
@@ -291,6 +311,13 @@ namespace BlizzardProgrammingTest.Backend
             return DBObject.Instance.raceClassTable.Where(r => r.Faction == character.Faction && r.Race == character.Race && r.Class == character.Class).Count() >= 1;
         }
 
+        /// <summary>
+        /// Apply a level token to a character. This increases the characters level to the value defined in
+        /// Query Properties.Level token level.
+        /// </summary>
+        /// <param name="id">The id of the character to increase.</param>
+        /// <param name="username">The owning player's username.</param>
+        /// <returns>True if successful. False if the username did not match the owner.</returns>
         public static bool ApplyLevelToken(int id, string username)
         {
             CharacterRowModel character = DBObject.Instance.characterTable.Where(c => c.Id == id).FirstOrDefault();
@@ -299,7 +326,8 @@ namespace BlizzardProgrammingTest.Backend
             {
                 int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
                 DBObject.Instance.characterTable[characterIndex].Level = BackendConstants.QueryProperties.LevelTokenLevel;
-                DBObject.Instance.SaveCharacterDataToFile();
+                //DBObject.Instance.SaveCharacterDataToFile();
+                DBObject.Instance.UpdateCache();
 
                 return true;
             }
@@ -324,6 +352,7 @@ namespace BlizzardProgrammingTest.Backend
                 int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
                 DBObject.Instance.characterTable[characterIndex].Deleted = true;
                 //DBObject.Instance.SaveCharacterDataToFile();
+                DBObject.Instance.UpdateCache();
 
                 return true;
             }
@@ -347,6 +376,7 @@ namespace BlizzardProgrammingTest.Backend
                 int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
                 DBObject.Instance.characterTable[characterIndex].Deleted = false;
                 //DBObject.Instance.SaveCharacterDataToFile();
+                DBObject.Instance.UpdateCache();
 
                 return true;
             }

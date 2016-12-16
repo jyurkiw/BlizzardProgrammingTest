@@ -63,5 +63,11 @@ namespace BlizzardProgrammingTest.Backend
             public const string Faction = "faction";
             public const string Deleted = "deleted";
         }
+
+        public static class CacheKeys
+        {
+            public const string RaceClassKey = "raceClassKey";
+            public const string CharacterDataKey = "charactersKey";
+        }
     }
 }
