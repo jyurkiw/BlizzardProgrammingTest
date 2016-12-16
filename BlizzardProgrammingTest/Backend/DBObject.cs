@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
 using BlizzardProgrammingTest.Backend.Models;
+using System.Threading.Tasks;
 
 namespace BlizzardProgrammingTest.Backend
 {
@@ -12,12 +13,14 @@ namespace BlizzardProgrammingTest.Backend
     /// Database interaction layer. In this case, the "DB" is just some
     /// JSON files on the disk.
     /// </summary>
-    public class DBObject
+    public class DBObject : IDisposable
     {
         private static DBObject _instance = null;
 
         private string raceClassQueryPath;
         private string characterQueryPath;
+
+        private bool isDisposed = false;
 
         /// <summary>
         /// Singleton implementation because file-access is expensive and I only want to do it once.
@@ -25,7 +28,7 @@ namespace BlizzardProgrammingTest.Backend
         /// level rather than the connection level. So, one singleton instance will service every single
         /// connection.
         /// </summary>
-        private static DBObject Instance {
+        public static DBObject Instance {
             get
             {
                 if(_instance == null)
@@ -40,7 +43,7 @@ namespace BlizzardProgrammingTest.Backend
         public List<RaceClassRowModel> raceClassTable;
         public List<CharacterRowModel> characterTable;
 
-        private static object key = new object();
+        private static object fileWriteKey = new object();
 
         /// <summary>
         /// On construction, load data from the "DB" (files).
@@ -50,25 +53,28 @@ namespace BlizzardProgrammingTest.Backend
         /// </summary>
         private DBObject()
         {
-            raceClassTable = new List<RaceClassRowModel>();
-            characterTable = new List<CharacterRowModel>();
-
-            raceClassQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.RaceClassQueryPath);
-            characterQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.CharacterPath);
-
-            // Load table data from files.
-            // Load Race/Class data
-            List<string[]> raceClassDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(raceClassQueryPath));
-            foreach(string[] row in raceClassDataSet)
+            lock (fileWriteKey)
             {
-                raceClassTable.Add(new RaceClassRowModel(row));
-            }
+                raceClassTable = new List<RaceClassRowModel>();
+                characterTable = new List<CharacterRowModel>();
 
-            // Load character data
-            List<string[]> characterDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(characterQueryPath));
-            foreach (string[] row in characterDataSet)
-            {
-                characterTable.Add(new CharacterRowModel(row));
+                raceClassQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.RaceClassQueryPath);
+                characterQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.CharacterPath);
+
+                // Load table data from files.
+                // Load Race/Class data
+                List<string[]> raceClassDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(raceClassQueryPath));
+                foreach (string[] row in raceClassDataSet)
+                {
+                    raceClassTable.Add(new RaceClassRowModel(row));
+                }
+
+                // Load character data
+                List<string[]> characterDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(characterQueryPath));
+                foreach (string[] row in characterDataSet)
+                {
+                    characterTable.Add(new CharacterRowModel(row));
+                }
             }
         }
 
@@ -89,6 +95,24 @@ namespace BlizzardProgrammingTest.Backend
         }
 
         /// <summary>
+        /// Dispose the DBObject.
+        /// Write character list data to file.
+        /// </summary>
+        public void Dispose()
+        {
+            if (!isDisposed)
+            {
+                DBObject.Instance.SaveCharacterDataToFile();
+                isDisposed = true;
+            }
+        }
+
+        ~DBObject()
+        {
+            Dispose();
+        }
+
+        /// <summary>
         /// Write the current character data to file.
         /// This overwrites the current data and doesn't use any kind of
         /// backing-up mechanism due to time constraints, otherwise
@@ -99,27 +123,30 @@ namespace BlizzardProgrammingTest.Backend
         /// </summary>
         private void SaveCharacterDataToFile()
         {
-            lock (key)
+            Task fileWriteTask = Task.Run(() =>
             {
-                System.IO.StreamWriter file = new System.IO.StreamWriter(characterQueryPath, false);
-                file.WriteLine("[");
-
-                // Save character data.
-                for (int i = 0; i < DBObject.Instance.characterTable.Count; i++)
+                lock (fileWriteKey)
                 {
-                    string line = DBObject.Instance.characterTable[i].ToString();
-                    if (i < DBObject.Instance.characterTable.Count - 1)
+                    System.IO.StreamWriter file = new System.IO.StreamWriter(characterQueryPath, false);
+                    file.WriteLine("[");
+
+                    // Save character data.
+                    for (int i = 0; i < DBObject.Instance.characterTable.Count; i++)
                     {
-                        line += ",";
+                        string line = DBObject.Instance.characterTable[i].ToString();
+                        if (i < DBObject.Instance.characterTable.Count - 1)
+                        {
+                            line += ",";
+                        }
+
+                        file.WriteLine(line);
                     }
 
-                    file.WriteLine(line);
+                    file.WriteLine("]");
+
+                    file.Close();
                 }
-
-                file.WriteLine("]");
-
-                file.Close();
-            }
+            });
         }
 
         // ORM Methods
@@ -130,16 +157,13 @@ namespace BlizzardProgrammingTest.Backend
         /// <returns>The user's character list.</returns>
         public static List<IDictionary<string, string>> GetCharacterList(string username)
         {
-            lock(key)
-            {
-                List<IDictionary<string, string>> characterList = (
-                    from character in DBObject.Instance.characterTable
-                    where character.Owner == username
-                    select character.GetContractDict()
-                ).ToList();
+            List<IDictionary<string, string>> characterList = (
+                from character in DBObject.Instance.characterTable
+                where character.Owner == username
+                select character.GetContractDict()
+            ).ToList();
                 
-                return characterList;
-            }
+            return characterList;
         }
 
         /// <summary>
@@ -211,22 +235,19 @@ namespace BlizzardProgrammingTest.Backend
             {
                 character.Level = BackendConstants.QueryProperties.DeathKnightMinLevelReq;
             }
+            
+            int newId = 1;
 
-            lock(key)
+            if (DBObject.Instance.characterTable.Count > 0)
             {
-                int newId = 1;
-
-                if (DBObject.Instance.characterTable.Count > 0)
-                {
-                    newId = DBObject.Instance.characterTable.Select(c => c.Id).Max() + 1;
-                }
-
-                character.Id = newId;
-
-                DBObject.Instance.characterTable.Add(character);
-
-                DBObject.Instance.SaveCharacterDataToFile();
+                newId = DBObject.Instance.characterTable.Select(c => c.Id).Max() + 1;
             }
+
+            character.Id = newId;
+
+            DBObject.Instance.characterTable.Add(character);
+
+            DBObject.Instance.SaveCharacterDataToFile();
         }
 
         /// <summary>
@@ -237,17 +258,14 @@ namespace BlizzardProgrammingTest.Backend
         /// <param name="id">The character ID to delete.</param>
         public static void DeleteCharacter(int id)
         {
-            lock (key)
+            CharacterRowModel character = DBObject.Instance.characterTable.Where(c => c.Id == id).FirstOrDefault();
+
+            if (character != null)
             {
-                CharacterRowModel character = DBObject.Instance.characterTable.Where(c => c.Id == id).FirstOrDefault();
-
-                if (character != null)
-                {
-                    DBObject.Instance.characterTable.Remove(character);
-                }
-
-                DBObject.Instance.SaveCharacterDataToFile();
+                DBObject.Instance.characterTable.Remove(character);
             }
+
+            DBObject.Instance.SaveCharacterDataToFile();
         }
     }
 }

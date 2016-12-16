@@ -14,5 +14,10 @@ namespace BlizzardProgrammingTest
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
+
+        public void Application_End()
+        {
+            DBObject.Instance.Dispose();
+        }
     }
 }
