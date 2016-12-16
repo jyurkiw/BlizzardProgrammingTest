@@ -85,24 +85,24 @@ Unit testing was performed on the front and back-ends where we would not simply 
 
 # Time Taken
 
-  Sat 12/10: 3 hours
-  Sun 12/11: 0 hours
-  Mon 12/12: 3 hours
-  Tue 12/13: 4 hours
-  Wed 12/14: 4 hours
-  Thu 12/15: 5.5 hours
+* Sat 12/10: 3 hours
+* Sun 12/11: 0 hours
+* Mon 12/12: 3 hours
+* Tue 12/13: 4 hours
+* Wed 12/14: 4 hours
+* Thu 12/15: 5.5 hours
 
 Total: 19.5 hours
 
 Task Breakdown:
 
-Frontend scaffolding and design: 2.5 hours
-Frontend logic implementation: 3 hours
-Backend API design: 1 hour
-Backend API implementation: 2 hours
-Backend Data Layer design: 3 hours
-Backend Data Layer implementation: 3 hours
-Unit Testing: 2 hours
-Documentation: 0.5 hours
-General Research: 1 hour
-Caching Research and Implementation: 1.5 hours
+* Frontend scaffolding and design: 2.5 hours
+* Frontend logic implementation: 3 hours
+* Backend API design: 1 hour
+* Backend API implementation: 2 hours
+* Backend Data Layer design: 3 hours
+* Backend Data Layer implementation: 3 hours
+* Unit Testing: 2 hours
+* Documentation: 0.5 hours
+* General Research: 1 hour
+* Caching Research and Implementation: 1.5 hours
