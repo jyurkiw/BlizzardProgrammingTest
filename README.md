@@ -59,7 +59,7 @@ Unit testing was performed on the front and back-ends where we would not simply 
 
 # Technical Issues
 
-1. The disk-persistance is slow. I attempted to isolate the actual writes from the main thread of execution using tasks, but was unsuccessful and simply ran out of time. The choice for disk-persistence was to either disable or remove the feature, or to leave it in but have it impact application performance. I chose to leave it in to demonstrate that it works. In a production environment, additional steps could have been taken with the time provided (like colaboration with teammates who were more familair with the fine points of .NET file IO performance tuning), and additional tools would have been available (like a database).
+1. Disk-persistence only works if you shut down the application through the actual IIS interface. Just hitting the red stop-box in Visual Studio kills the application and prevents the write-process from firing. In order to persist between runs, you need to go to the "Show Hidden Icons" arrow on your windows task bar (the icon bar on the bottom of your desktop), right-click the icon for IIS Express, go to Sites -> BlizzardProgrammingTest -> Stop Site. This will allow the application to stop normally, and will properly fire the Application_Stop event. If you just Stop Debugging in VS, it will cause an abrupt process termination that skips all the end-application events.
 
 2. There is no backup plan for authentication besides windows auth, and anon auth is not enabled. The application does not have a sign-in page so if Windows auth is disabled (because, say, you're using Mac or 'nix without some sort of LDAP auth token set up for AD) you'll probably see the application blow up. This limitation is purely time-constrained.
 
@@ -80,9 +80,9 @@ Sun 12/11: 0 hours
 Mon 12/12: 3 hours
 Tue 12/13: 4 hours
 Wed 12/14: 4 hours
-Thu 12/15: 4 hours
+Thu 12/15: 5.5 hours
 
-Total: 18 hours
+Total: 19.5 hours
 
 Task Breakdown:
 
@@ -95,3 +95,4 @@ Backend Data Layer implementation: 3 hours
 Unit Testing: 2 hours
 Documentation: 0.5 hours
 General Research: 1 hour
+Caching Research and Implementation: 1.5 hours
