@@ -48,7 +48,7 @@ namespace BlizzardProgrammingTest.Backend
         /// Caching will happen in a singleton because we don't need to
         /// get complicated, and the dataset is extremely small.
         /// </summary>
-        public DBObject()
+        private DBObject()
         {
             raceClassTable = new List<RaceClassRowModel>();
             characterTable = new List<CharacterRowModel>();
@@ -57,7 +57,6 @@ namespace BlizzardProgrammingTest.Backend
             characterQueryPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, BackendConstants.QueryProperties.CharacterPath);
 
             // Load table data from files.
-                
             // Load Race/Class data
             List<string[]> raceClassDataSet = JsonConvert.DeserializeObject<List<string[]>>(System.IO.File.ReadAllText(raceClassQueryPath));
             foreach(string[] row in raceClassDataSet)
@@ -71,6 +70,22 @@ namespace BlizzardProgrammingTest.Backend
             {
                 characterTable.Add(new CharacterRowModel(row));
             }
+        }
+
+        /// <summary>
+        /// On construction, load data from the passed lists.
+        /// This constructor has been included for testing purposes.
+        /// Normal program flow should utalize the data files.
+        /// For release code, this constructor should be in an #if DEBUG
+        /// block so that it will not be compiled in.
+        /// </summary>
+        /// <param name="raceData">Test race data.</param>
+        /// <param name="characterData">Test character data.</param>
+        public DBObject(List<RaceClassRowModel> raceData, List<CharacterRowModel> characterData)
+        {
+            raceClassTable = raceData;
+            characterTable = characterData;
+            _instance = this;
         }
 
         /// <summary>
@@ -174,7 +189,7 @@ namespace BlizzardProgrammingTest.Backend
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <returns>True if the user can make a deathknight.</returns>
-        private static bool GetUserPermForDeathknights(string username)
+        public static bool GetUserPermForDeathknights(string username)
         {
             return (from row in DBObject.Instance.characterTable where row.Level >= BackendConstants.QueryProperties.DeathKnightMinLevelReq select true).Count() > 0;
         }
