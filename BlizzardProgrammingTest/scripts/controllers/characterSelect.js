@@ -140,14 +140,12 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
         if (!$scope.undeleteMode) {
             CharacterAPI.getCharactersForUser($scope.userData.username)
                 .then(function (characterList) {
-                    console.log(characterList);
                     $scope.characterList = characterList;
                     $scope.$apply();
                 });
         } else {
             CharacterAPI.getDeletedCharactersForUser($scope.userData.username)
                 .then(function (characterList) {
-                    console.log(characterList);
                     $scope.characterList = characterList;
                     $scope.$apply();
                 });

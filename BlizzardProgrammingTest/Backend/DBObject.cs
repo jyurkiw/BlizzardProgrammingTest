@@ -248,7 +248,12 @@ namespace BlizzardProgrammingTest.Backend
                 return false;
             }
 
-            // Check for invalid class selection.
+            // Check for invalid faction, class, or race selection.
+            if (!ValidateCharacter(character))
+            {
+                return false;
+            }
+
             // No death knights if you don't have a toon at 55 yet.
             if (character.Class.CompareTo(BackendConstants.QueryProperties.DeathKnightClassName) == 0 && !GetUserPermForDeathknights(character.Owner))
             {
@@ -273,6 +278,17 @@ namespace BlizzardProgrammingTest.Backend
             DBObject.Instance.SaveCharacterDataToFile();
 
             return true;
+        }
+
+        /// <summary>
+        /// Validate the passed character's faction + race + class combination against
+        /// the current race class query dataset.
+        /// </summary>
+        /// <param name="character">The character to validate.</param>
+        /// <returns>True if the combination is valid.</returns>
+        private static bool ValidateCharacter(CharacterRowModel character)
+        {
+            return DBObject.Instance.raceClassTable.Where(r => r.Faction == character.Faction && r.Race == character.Race && r.Class == character.Class).Count() >= 1;
         }
 
         /// <summary>
