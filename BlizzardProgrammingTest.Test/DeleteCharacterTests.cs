@@ -12,6 +12,29 @@ namespace BlizzardProgrammingTest.Test
         [TestMethod]
         public void TestDeleteCharacterIdNoExist()
         {
+            RaceClassRowModel humWar = new RaceClassRowModel();
+            humWar.Id = 1;
+            humWar.Faction = "alliance";
+            humWar.Race = "Human";
+            humWar.Class = "Warrior";
+
+            RaceClassRowModel humMag = new RaceClassRowModel();
+            humWar.Id = 1;
+            humWar.Faction = "alliance";
+            humWar.Race = "Human";
+            humWar.Class = "Mage";
+
+            RaceClassRowModel humDk = new RaceClassRowModel();
+            humDk.Id = 1;
+            humDk.Faction = "alliance";
+            humDk.Race = "Human";
+            humDk.Class = "Death Knight";
+
+            List<RaceClassRowModel> raceClassData = new List<RaceClassRowModel>();
+            raceClassData.Add(humWar);
+            raceClassData.Add(humMag);
+            raceClassData.Add(humDk);
+
             CharacterRowModel dkToon = new CharacterRowModel();
             dkToon.Class = "Warrior";
             dkToon.Faction = "alliance";
@@ -23,7 +46,7 @@ namespace BlizzardProgrammingTest.Test
 
             List<CharacterRowModel> characterData = new List<CharacterRowModel>();
             characterData.Add(dkToon);
-            DBObject dbo = new DBObject(null, characterData);
+            DBObject dbo = new DBObject(raceClassData, characterData);
 
             DBObject.DeleteCharacter(dkToon.Id + 1, dkToon.Owner);
 
@@ -35,6 +58,29 @@ namespace BlizzardProgrammingTest.Test
         [TestMethod]
         public void TestDeleteCharacterIdExist()
         {
+            RaceClassRowModel humWar = new RaceClassRowModel();
+            humWar.Id = 1;
+            humWar.Faction = "alliance";
+            humWar.Race = "Human";
+            humWar.Class = "Warrior";
+
+            RaceClassRowModel humMag = new RaceClassRowModel();
+            humWar.Id = 1;
+            humWar.Faction = "alliance";
+            humWar.Race = "Human";
+            humWar.Class = "Mage";
+
+            RaceClassRowModel humDk = new RaceClassRowModel();
+            humDk.Id = 1;
+            humDk.Faction = "alliance";
+            humDk.Race = "Human";
+            humDk.Class = "Death Knight";
+
+            List<RaceClassRowModel> raceClassData = new List<RaceClassRowModel>();
+            raceClassData.Add(humWar);
+            raceClassData.Add(humMag);
+            raceClassData.Add(humDk);
+
             CharacterRowModel dkToon = new CharacterRowModel();
             dkToon.Class = "Warrior";
             dkToon.Faction = "alliance";
@@ -46,7 +92,7 @@ namespace BlizzardProgrammingTest.Test
 
             List<CharacterRowModel> characterData = new List<CharacterRowModel>();
             characterData.Add(dkToon);
-            DBObject dbo = new DBObject(null, characterData);
+            DBObject dbo = new DBObject(raceClassData, characterData);
 
             DBObject.DeleteCharacter(dkToon.Id, dkToon.Owner);
 
