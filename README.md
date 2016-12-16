@@ -6,6 +6,16 @@ This is a solution to the Blizzard .Net Engineer Take Home Test.
 
 It is an application that allows managment of a World of Warcraft player's characters.
 
+# Instructions
+
+To build the application, double-click on the BlizzardProgrammingTest.sln file in the top directory. You must have Visual Studio 2015 installed (I use the community edition.)
+
+To run the C# tests, use the Visual Studio test explorer. It can be found in the Test -> Windows  menu (Test Explorer).
+
+To run the JavaScript tests, you'll need NPM installed. Just open the BlizzardProgrammingTest/BlizzardProgrammingTest/scripts directory in a console (NPM must be installed and in your path), and use the "npm test" command. All dependencies have already been installed (you can run "npm install" first if you want).
+
+# Introduction
+
 When the application starts, the user will take on the role of a new player with a clean sheet of characters.
 
 * The player can add characters to their account.
@@ -59,7 +69,7 @@ Unit testing was performed on the front and back-ends where we would not simply 
 
 # Technical Issues
 
-1. Disk-persistence only works if you shut down the application through the actual IIS interface. Just hitting the red stop-box in Visual Studio kills the application and prevents the write-process from firing. In order to persist between runs, you need to go to the "Show Hidden Icons" arrow on your windows task bar (the icon bar on the bottom of your desktop), right-click the icon for IIS Express, go to Sites -> BlizzardProgrammingTest -> Stop Site. This will allow the application to stop normally, and will properly fire the Application_Stop event. If you just Stop Debugging in VS, it will cause an abrupt process termination that skips all the end-application events.
+1. Disk-persistence only works if you shut down the application through the actual IIS interface. Just hitting the red stop-box in Visual Studio kills the application and prevents the write-process from firing. In order to persist between runs, you need to go to the "Show Hidden Icons" arrow on your windows task bar (the icon bar on the bottom of your desktop), right-click the icon for IIS Express, go to Sites -> BlizzardProgrammingTest -> Stop Site. This will allow the application to stop normally, and will properly fire the Application_Stop event. If you just Stop Debugging in VS, it will cause an abrupt process termination that skips all the end-application events. As far as I've been able to find, this is a limitation of IIS Express and ASP.NET.
 
 2. There is no backup plan for authentication besides windows auth, and anon auth is not enabled. The application does not have a sign-in page so if Windows auth is disabled (because, say, you're using Mac or 'nix without some sort of LDAP auth token set up for AD) you'll probably see the application blow up. This limitation is purely time-constrained.
 
