@@ -122,6 +122,7 @@
     <Content Include="scripts\services\characters.js" />
     <Content Include="scripts\services\races.js" />
     <Content Include="scripts\services\users.js" />
+    <Content Include="scripts\test\TestCharacterCreateUtilities.js" />
     <Content Include="styles\blizz2p0.css" />
     <Content Include="Web.config" />
   </ItemGroup>
