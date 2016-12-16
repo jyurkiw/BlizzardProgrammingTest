@@ -160,9 +160,27 @@ namespace BlizzardProgrammingTest.Backend
             List<IDictionary<string, string>> characterList = (
                 from character in DBObject.Instance.characterTable
                 where character.Owner == username
+                where !character.Deleted
                 select character.GetContractDict()
             ).ToList();
                 
+            return characterList;
+        }
+
+        /// <summary>
+        /// Get the user's deleted characters. Requires a valid username.
+        /// </summary>
+        /// <param name="username">A username.</param>
+        /// <returns>The user's deleted character list.</returns>
+        public static List<IDictionary<string, string>> GetDeletedCharacterList(string username)
+        {
+            List<IDictionary<string, string>> characterList = (
+                from character in DBObject.Instance.characterTable
+                where character.Owner == username
+                where character.Deleted
+                select character.GetContractDict()
+            ).ToList();
+
             return characterList;
         }
 
@@ -220,16 +238,21 @@ namespace BlizzardProgrammingTest.Backend
 
         /// <summary>
         /// Add a new character to the character data set.
-        /// TODO: This method should return a boolean.
         /// </summary>
         /// <param name="character">The character data.</param>
-        public static void AddNewCharacter(CharacterRowModel character)
+        public static bool AddNewCharacter(CharacterRowModel character, string username)
         {
+            // Check username against owner
+            if (character.Owner.CompareTo(username) != 0)
+            {
+                return false;
+            }
+
             // Check for invalid class selection.
             // No death knights if you don't have a toon at 55 yet.
             if (character.Class.CompareTo(BackendConstants.QueryProperties.DeathKnightClassName) == 0 && !GetUserPermForDeathknights(character.Owner))
             {
-                return;
+                return false;
             } // Check for valid deathknight toons and set level as apporpriate (DKs start at level 55).
             else if (character.Class.CompareTo(BackendConstants.QueryProperties.DeathKnightClassName) == 0)
             {
@@ -248,6 +271,8 @@ namespace BlizzardProgrammingTest.Backend
             DBObject.Instance.characterTable.Add(character);
 
             DBObject.Instance.SaveCharacterDataToFile();
+
+            return true;
         }
 
         /// <summary>
@@ -256,16 +281,45 @@ namespace BlizzardProgrammingTest.Backend
         /// Username should be retrieved from the controller. Not the front-end.
         /// </summary>
         /// <param name="id">The character ID to delete.</param>
-        public static void DeleteCharacter(int id)
+        public static bool DeleteCharacter(int id, string username)
         {
             CharacterRowModel character = DBObject.Instance.characterTable.Where(c => c.Id == id).FirstOrDefault();
 
-            if (character != null)
+            if (character != null && character.Owner.CompareTo(username) == 0)
             {
-                DBObject.Instance.characterTable.Remove(character);
-            }
+                int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
+                DBObject.Instance.characterTable[characterIndex].Deleted = true;
+                DBObject.Instance.SaveCharacterDataToFile();
 
-            DBObject.Instance.SaveCharacterDataToFile();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Undelete a character by ID.
+        /// Username should be retrieved from the controller. Not the front-end.
+        /// </summary>
+        /// <param name="id">The character ID to undelete.</param>
+        public static bool UndeleteCharacter(int id, string username)
+        {
+            CharacterRowModel character = DBObject.Instance.characterTable.Where(c => c.Id == id).FirstOrDefault();
+
+            if (character != null && character.Owner.CompareTo(username) == 0)
+            {
+                int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
+                DBObject.Instance.characterTable[characterIndex].Deleted = false;
+                DBObject.Instance.SaveCharacterDataToFile();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

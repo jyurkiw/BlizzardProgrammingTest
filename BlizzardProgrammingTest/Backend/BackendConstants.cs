@@ -29,6 +29,7 @@ namespace BlizzardProgrammingTest.Backend
             public const int Race = 4;
             public const int Class = 5;
             public const int Faction = 6;
+            public const int Deleted = 7;
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace BlizzardProgrammingTest.Backend
         public static class QueryProperties
         {
             public const int RaceClassRowLength = 4;
-            public const int CharacterRowLength = 7;
+            public const int CharacterRowLength = 8;
             public const string DeathKnightClassName = "Death Knight";
             public const string RaceClassQueryPath = "bin\\Data\\raceClassJoinQuery.json";
             public const string CharacterPath = "bin\\Data\\charactersQuery.json";
@@ -59,6 +60,7 @@ namespace BlizzardProgrammingTest.Backend
             public const string Race = "race";
             public const string Class = "class";
             public const string Faction = "faction";
+            public const string Deleted = "deleted";
         }
     }
 }

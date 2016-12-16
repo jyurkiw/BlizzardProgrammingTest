@@ -21,8 +21,13 @@
                     <p>Click 'New' to create a new character.</p>
                 </li>
                 <li class="character-block-buttons">
-                    <a class="character-button" ng-click="newCharacterButtonClickHandler()">New</a>
-                    <a class="character-button" ng-click="deleteCharacterButtonClickHandler()">Delete</a>
+                    <a class="character-button" ng-if="!undeleteMode" ng-click="newCharacterButtonClickHandler()">New</a>
+                    <a class="character-button" ng-if="!undeleteMode" ng-click="deleteCharacterButtonClickHandler()">Delete</a>
+                    <a class="character-button" ng-if="undeleteMode" ng-click="undeleteCharacterButtonClickHandler()">Undelete</a>
+                    <br/>
+                    <br/>
+                    <a class="character-button" ng-if="!undeleteMode" ng-click="undeleteModeCharacterButtonClickHandler()">Undelete</a>
+                    <a class="character-button" ng-if="undeleteMode" ng-click="cancelUndeleteModeButtonClickHandler()">Cancel</a>
                 </li>
             </ul>
         </div>

@@ -33,6 +33,27 @@ characterServices.factory('CharacterAPI', ['$http', function($http) {
     }
 
     /**
+        Get a list of deleted characters owned by the user.
+        Matches characters based on passed username.
+
+        @memberof CharacterAPI
+        @param string username The name of the user.
+        @return Promise The API response data.
+    */
+    var getDeletedCharactersForUser = function (username) {
+        // Query API
+        return new Promise(function (resolve, reject) {
+            $http.get('http://localhost:53653/api/DeletedCharacters/' + username)
+                .then(function (response) {
+                    resolve(response.data);
+                })
+                .catch(function (err) {
+                    reject(err);
+                });
+        });
+    }
+
+    /**
         Submit a character for insertion for the user.
 
         @memberof CharacterAPI
@@ -75,9 +96,30 @@ characterServices.factory('CharacterAPI', ['$http', function($http) {
         });
     }
 
+    /**
+        Undelete a character for the user.
+
+        @memberof CharacterAPI
+        @param Int The character ID.
+        @return Promise A promise that resolves to the response data (should be a standard OK message).
+    */
+    var undeleteCharacterForUser = function (characterId) {
+        return new Promise(function (resolve, reject) {
+            $http.post('http://localhost:53653/api/DeletedCharacters/' + characterId)
+                .then(function (response) {
+                    resolve(response.data);
+                })
+                .catch(function (err) {
+                    reject(err);
+                });
+        });
+    }
+
     return {
         getCharactersForUser: getCharactersForUser,
+        getDeletedCharactersForUser: getDeletedCharactersForUser,
         addCharacterForUser: addCharacterForUser,
-        deleteCharacterForUser: deleteCharacterForUser
+        deleteCharacterForUser: deleteCharacterForUser,
+        undeleteCharacterForUser: undeleteCharacterForUser
     }
 }]);
