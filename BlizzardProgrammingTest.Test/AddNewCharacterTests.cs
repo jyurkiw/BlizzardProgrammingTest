@@ -35,7 +35,7 @@ namespace BlizzardProgrammingTest.Test
             dkToon2.Owner = "Masterson";
             dkToon2.Race = "Human";
 
-            DBObject.AddNewCharacter(dkToon2);
+            DBObject.AddNewCharacter(dkToon2, dkToon2.Owner);
 
             List<IDictionary<string, string>> characterList = DBObject.GetCharacterList(dkToon2.Owner);
 
@@ -67,7 +67,7 @@ namespace BlizzardProgrammingTest.Test
             dkToon2.Owner = "Masterson";
             dkToon2.Race = "Human";
 
-            DBObject.AddNewCharacter(dkToon2);
+            DBObject.AddNewCharacter(dkToon2, dkToon2.Owner);
 
             List<IDictionary<string, string>> characterList = DBObject.GetCharacterList(dkToon2.Owner);
 
@@ -101,7 +101,7 @@ namespace BlizzardProgrammingTest.Test
             dkToon2.Owner = "Masterson";
             dkToon2.Race = "Human";
 
-            DBObject.AddNewCharacter(dkToon2);
+            DBObject.AddNewCharacter(dkToon2, dkToon2.Owner);
 
             List<IDictionary<string, string>> characterList = DBObject.GetCharacterList(dkToon2.Owner);
 

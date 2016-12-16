@@ -134,6 +134,7 @@
     <Compile Include="Backend\Models\IModel.cs" />
     <Compile Include="Backend\Models\RaceClassRowModel.cs" />
     <Compile Include="Controllers\CharactersController.cs" />
+    <Compile Include="Controllers\DeletedCharactersController.cs" />
     <Compile Include="Controllers\RaceClassController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">

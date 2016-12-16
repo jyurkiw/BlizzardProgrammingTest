@@ -25,7 +25,7 @@ namespace BlizzardProgrammingTest.Test
             characterData.Add(dkToon);
             DBObject dbo = new DBObject(null, characterData);
 
-            DBObject.DeleteCharacter(dkToon.Id + 1);
+            DBObject.DeleteCharacter(dkToon.Id + 1, dkToon.Owner);
 
             List<IDictionary<string, string>> characterList = DBObject.GetCharacterList(dkToon.Owner);
 
@@ -48,7 +48,7 @@ namespace BlizzardProgrammingTest.Test
             characterData.Add(dkToon);
             DBObject dbo = new DBObject(null, characterData);
 
-            DBObject.DeleteCharacter(dkToon.Id);
+            DBObject.DeleteCharacter(dkToon.Id, dkToon.Owner);
 
             List<IDictionary<string, string>> characterList = DBObject.GetCharacterList(dkToon.Owner);
 

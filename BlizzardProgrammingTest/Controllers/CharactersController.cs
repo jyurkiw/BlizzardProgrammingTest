@@ -24,10 +24,20 @@ namespace BlizzardProgrammingTest.Controllers
         /// <returns>The user's characters.</returns>
         public IHttpActionResult Get(string id)
         {
-            List<IDictionary<string, string>> characterList = DBObject.GetCharacterList(id);
+            string username = RequestContext.Principal.Identity.Name;
+            username = username.Substring(username.LastIndexOf('\\') + 1);
 
-            //return characterList;
-            return Ok(characterList);
+            if (id.CompareTo(username) == 0)
+            {
+                List<IDictionary<string, string>> characterList = DBObject.GetCharacterList(id);
+
+                //return characterList;
+                return Ok(characterList);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         /// <summary>
@@ -39,9 +49,19 @@ namespace BlizzardProgrammingTest.Controllers
         public IHttpActionResult Post([FromBody]CharacterRowModel value)
         {
             value.Level = 1;
-            DBObject.AddNewCharacter(value);
+            string username = RequestContext.Principal.Identity.Name;
+            username = username.Substring(username.LastIndexOf('\\') + 1);
 
-            return Ok();
+            if (value.Owner.CompareTo(username) == 0)
+            {
+                DBObject.AddNewCharacter(value, username);
+
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         /// <summary>
@@ -50,9 +70,19 @@ namespace BlizzardProgrammingTest.Controllers
         /// Username should be retrieved from the controller. Not the front-end.
         /// </summary>
         /// <param name="id">The ID of the character.</param>
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
-            DBObject.DeleteCharacter(id);
+            string username = RequestContext.Principal.Identity.Name;
+            username = username.Substring(username.LastIndexOf('\\') + 1);
+
+            if(DBObject.DeleteCharacter(id, username))
+            {
+                return Ok();
+            }
+            else
+            {
+                return InternalServerError();
+            }
         }
     }
 }

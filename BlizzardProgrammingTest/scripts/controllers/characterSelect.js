@@ -7,6 +7,8 @@
 characterApp.controller('character-select-controller', function ($scope, $rootScope, CharacterAPI) {
     $scope.characterList = [];
 
+    $scope.undeleteMode = false;
+
     /**
         Character block decoration function.
         Generates a character block class based on character faction.
@@ -56,14 +58,53 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
     */
     $scope.deleteCharacterButtonClickHandler = function () {
         var target = getSelectedCharacter();
-        $scope.characterList.splice($scope.characterList.map(function (e) { return e.id; }).indexOf(target.id), 1);
 
         if (target !== null) {
+            $scope.characterList.splice($scope.characterList.map(function (e) { return e.id; }).indexOf(target.id), 1);
             CharacterAPI.deleteCharacterForUser(target.id)
                 .then(function () {
                     LoadCharacterList();
                 });
         }
+    }
+
+    /**
+        Undelete the selected character.
+
+        @memberof CharacterSelect
+    */
+    $scope.undeleteCharacterButtonClickHandler = function () {
+        var target = getSelectedCharacter();
+
+        if (target !== null) {
+            $scope.characterList.splice($scope.characterList.map(function (e) { return e.id; }).indexOf(target.id), 1);
+            CharacterAPI.undeleteCharacterForUser(target.id)
+                .then(function () {
+                    LoadCharacterList();
+                });
+        }
+    }
+
+    /**
+        Undelete-Mode Character Button Click Handler.
+        Set to undelete mode.
+
+        @memberof CharacterSelect
+    */
+    $scope.undeleteModeCharacterButtonClickHandler = function () {
+        $scope.undeleteMode = true;
+        LoadCharacterList();
+    }
+
+    /**
+        Cancel Undelete-Mode Button Click Handler.
+        Turn off undelete mode.
+
+        @memberof CharacterSelect
+    */
+    $scope.cancelUndeleteModeButtonClickHandler = function () {
+        $scope.undeleteMode = false;
+        LoadCharacterList();
     }
 
     /**
@@ -96,11 +137,21 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
         @memberof CharacterSelect
     */
     function LoadCharacterList() {
-        CharacterAPI.getCharactersForUser($scope.userData.username)
-            .then(function (characterList) {
-                $scope.characterList = characterList;
-                $scope.$apply();
-            });
+        if (!$scope.undeleteMode) {
+            CharacterAPI.getCharactersForUser($scope.userData.username)
+                .then(function (characterList) {
+                    console.log(characterList);
+                    $scope.characterList = characterList;
+                    $scope.$apply();
+                });
+        } else {
+            CharacterAPI.getDeletedCharactersForUser($scope.userData.username)
+                .then(function (characterList) {
+                    console.log(characterList);
+                    $scope.characterList = characterList;
+                    $scope.$apply();
+                });
+        }
     }
 
     // Utility Functions

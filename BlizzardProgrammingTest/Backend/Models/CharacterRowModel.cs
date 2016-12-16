@@ -20,8 +20,12 @@ namespace BlizzardProgrammingTest.Backend.Models
         public string Race { get; set; }
         public string Class { get; set; }
         public string Faction { get; set; }
+        public bool Deleted { get; set; }
 
-        public CharacterRowModel() { }
+        public CharacterRowModel()
+        {
+            Deleted = false;
+        }
         public CharacterRowModel(string[] row)
         {
             ModelInit(row);
@@ -45,6 +49,7 @@ namespace BlizzardProgrammingTest.Backend.Models
                 Race = row[BackendConstants.CharacterQueryIndicies.Race];
                 Class = row[BackendConstants.CharacterQueryIndicies.Class];
                 Faction = row[BackendConstants.CharacterQueryIndicies.Faction];
+                Deleted = bool.Parse(row[BackendConstants.CharacterQueryIndicies.Deleted]);
             }
         }
         
@@ -62,6 +67,7 @@ namespace BlizzardProgrammingTest.Backend.Models
             contract.Add(BackendConstants.CharacterFieldNames.Race, Race);
             contract.Add(BackendConstants.CharacterFieldNames.Class, Class);
             contract.Add(BackendConstants.CharacterFieldNames.Faction, Faction);
+            contract.Add(BackendConstants.CharacterFieldNames.Deleted, Deleted.ToString());
 
             return contract;
         }
@@ -74,7 +80,7 @@ namespace BlizzardProgrammingTest.Backend.Models
         /// <returns>The model in a string.</returns>
         public override string ToString()
         {
-            return string.Format("    [ \"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\", \"{6}\" ]", Id.ToString(), Owner, Name, Level.ToString(), Race, Class, Faction);
+            return string.Format("    [ \"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\", \"{6}\", \"{7}\" ]", Id.ToString(), Owner, Name, Level.ToString(), Race, Class, Faction, Deleted);
         }
     }
 }
