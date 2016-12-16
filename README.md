@@ -12,7 +12,7 @@ To build the application, double-click on the BlizzardProgrammingTest.sln file i
 
 To run the C# tests, use the Visual Studio test explorer. It can be found in the Test -> Windows  menu (Test Explorer).
 
-To run the JavaScript tests, you'll need NPM installed. Just open the BlizzardProgrammingTest/BlizzardProgrammingTest/scripts directory in a console (NPM must be installed and in your path), and use the "npm test" command. All dependencies have already been installed (you can run "npm install" first if you want).
+To run the JavaScript tests, you'll need NPM installed. Just open the BlizzardProgrammingTest/BlizzardProgrammingTest/scripts directory in a console (NPM must be installed and in your path), and use the "npm test" command. All dependencies have already been installed (you can run "npm install" first if you want). If you don't have NPM installed and won't install it for this, and/or want to read the JS tests anyway they're in the scripts/test directory.
 
 # Introduction
 
