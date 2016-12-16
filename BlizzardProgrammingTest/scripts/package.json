@@ -1,0 +1,16 @@
+{
+  "name": "blizzard-programming-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "characterApplication.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --trace-warnings --reporter spec"
+  },
+  "author": "Jeffrey Yurkiw",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "sinon": "^1.17.6"
+  }
+}
