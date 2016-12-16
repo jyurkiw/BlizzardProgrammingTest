@@ -323,7 +323,7 @@ namespace BlizzardProgrammingTest.Backend
             {
                 int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
                 DBObject.Instance.characterTable[characterIndex].Deleted = true;
-                DBObject.Instance.SaveCharacterDataToFile();
+                //DBObject.Instance.SaveCharacterDataToFile();
 
                 return true;
             }
@@ -346,7 +346,7 @@ namespace BlizzardProgrammingTest.Backend
             {
                 int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
                 DBObject.Instance.characterTable[characterIndex].Deleted = false;
-                DBObject.Instance.SaveCharacterDataToFile();
+                //DBObject.Instance.SaveCharacterDataToFile();
 
                 return true;
             }

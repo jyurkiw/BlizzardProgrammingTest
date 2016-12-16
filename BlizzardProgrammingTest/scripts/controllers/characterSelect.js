@@ -78,6 +78,7 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
             $scope.characterList.splice($scope.characterList.map(function (e) { return e.id; }).indexOf(target.id), 1);
             CharacterAPI.deleteCharacterForUser(target.id)
                 .then(function () {
+                    $rootScope.$emit('LevelTokenUsed');
                     LoadCharacterList();
                 });
         }
@@ -95,6 +96,7 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
             $scope.characterList.splice($scope.characterList.map(function (e) { return e.id; }).indexOf(target.id), 1);
             CharacterAPI.undeleteCharacterForUser(target.id)
                 .then(function () {
+                    $rootScope.$emit('LevelTokenUsed');
                     LoadCharacterList();
                 });
         }
