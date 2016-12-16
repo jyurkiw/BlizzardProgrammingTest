@@ -85,12 +85,12 @@ Unit testing was performed on the front and back-ends where we would not simply 
 
 # Time Taken
 
-Sat 12/10: 3 hours
-Sun 12/11: 0 hours
-Mon 12/12: 3 hours
-Tue 12/13: 4 hours
-Wed 12/14: 4 hours
-Thu 12/15: 5.5 hours
+  Sat 12/10: 3 hours
+  Sun 12/11: 0 hours
+  Mon 12/12: 3 hours
+  Tue 12/13: 4 hours
+  Wed 12/14: 4 hours
+  Thu 12/15: 5.5 hours
 
 Total: 19.5 hours
 
