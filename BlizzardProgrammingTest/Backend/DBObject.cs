@@ -233,7 +233,7 @@ namespace BlizzardProgrammingTest.Backend
         /// <returns>True if the user can make a deathknight.</returns>
         public static bool GetUserPermForDeathknights(string username)
         {
-            return (from row in DBObject.Instance.characterTable where row.Level >= BackendConstants.QueryProperties.DeathKnightMinLevelReq select true).Count() > 0;
+            return (from row in DBObject.Instance.characterTable where row.Level >= BackendConstants.QueryProperties.DeathKnightMinLevelReq where !row.Deleted select true).Count() > 0;
         }
 
         /// <summary>
