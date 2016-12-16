@@ -7,6 +7,9 @@
 *.userosscache
 *.sln.docstates
 
+# Front-end Unit Testing
+BlizzardProgrammingTest/scripts/node_modules
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
