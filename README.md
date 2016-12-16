@@ -49,6 +49,8 @@ The application runs on a clean build directly from a git clone operation out of
 
 The project uses AngularJS for the front-end, and ASP.Net for the back-end. The front-end is an angularjs single-page application while the back-end API uses Microsoft's .NET Web Api 2.
 
+The front-end is data-driven using the same back-end system that manages characters. It's an in-memory store using a singleton pattern that persists across connections so long as you don't restart the server. The data-set that is used to create the faction/class/race combinations in the character creator is also used to validate all characters that are created. Any character that don't adhere to the faction + class + race combinations present in the back-end is not created.
+
 Data persistence is in-memory and on-disk (see issue #1).
 
 Authentication is handled through Windows Authentication. If you are signed into your computer, you are signed into the application (see issue #2).
@@ -68,3 +70,28 @@ Unit testing was performed on the front and back-ends where we would not simply 
 1. Characters are created at level 1. This does mean that Death Knights cannot be created without shutting the application down, and changing the data that has been written to file.
 
 2. I'm assuming my awesome orc drawing in the character creator is adequate for all race and class combinations. He's just that awesome.
+
+3. I assumed that duplicate names were okay because it was not specified in the test document to be illegal. If this was not the intention we can put the feature into the next development cycle as a priority, assuming the stake holders don't want a more robust solution that allows duplicate names.
+
+# Time Taken
+
+Sat 12/10: 3 hours
+Sun 12/11: 0 hours
+Mon 12/12: 3 hours
+Tue 12/13: 4 hours
+Wed 12/14: 4 hours
+Thu 12/15: 4 hours
+
+Total: 18 hours
+
+Task Breakdown:
+
+Frontend scaffolding and design: 2.5 hours
+Frontend logic implementation: 3 hours
+Backend API design: 1 hour
+Backend API implementation: 2 hours
+Backend Data Layer design: 3 hours
+Backend Data Layer implementation: 3 hours
+Unit Testing: 2 hours
+Documentation: 0.5 hours
+General Research: 1 hour
