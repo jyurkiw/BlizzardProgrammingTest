@@ -121,9 +121,9 @@ namespace BlizzardProgrammingTest.Backend
         /// Of course, if this were a real application, we'd be using a database
         /// anyway.
         /// </summary>
-        private void SaveCharacterDataToFile()
+        private Task SaveCharacterDataToFile()
         {
-            Task fileWriteTask = Task.Run(() =>
+            return Task.Run(() =>
             {
                 lock (fileWriteKey)
                 {

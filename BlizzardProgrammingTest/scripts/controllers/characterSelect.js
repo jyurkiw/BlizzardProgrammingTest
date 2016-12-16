@@ -54,11 +54,16 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
 
         @memberof CharacterSelect
     */
-    $scope.deleteCharacterButtonClickHandler = function() {
-        CharacterAPI.deleteCharacterForUser(getSelectedCharacter().id)
-            .then(function () {
-                LoadCharacterList();
-            });
+    $scope.deleteCharacterButtonClickHandler = function () {
+        var target = getSelectedCharacter();
+        $scope.characterList.splice($scope.characterList.map(function (e) { return e.id; }).indexOf(target.id), 1);
+
+        if (target !== null) {
+            CharacterAPI.deleteCharacterForUser(target.id)
+                .then(function () {
+                    LoadCharacterList();
+                });
+        }
     }
 
     /**
@@ -68,6 +73,7 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
         @memberof CharacterSelect
     */
     $rootScope.$on('ReloadCharacterList', function (event, data) {
+        $scope.characterList.push(data);
         LoadCharacterList();
     });
 

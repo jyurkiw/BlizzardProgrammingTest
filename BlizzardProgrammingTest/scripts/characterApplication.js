@@ -8,3 +8,5 @@ characterApp.constant('HORDE', 'horde');
 characterApp.constant('DEFAULT_FACTION', 'alliance');
 characterApp.constant('DEFAULT_RACE', 'Human');
 characterApp.constant('DEFAULT_CLASS', 'Warrior');
+characterApp.constant('DEATHKNIGHT_CLASS', 'Death Knight');
+characterApp.constant('DEATHKNIGHT_START_LEVEL', 55);
