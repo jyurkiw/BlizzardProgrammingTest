@@ -65,6 +65,26 @@ namespace BlizzardProgrammingTest.Controllers
         }
 
         /// <summary>
+        /// Apply a character level token.
+        /// </summary>
+        /// <param name="id">The id of the character.</param>
+        /// <returns>An Ok if the user owns the character.</returns>
+        public IHttpActionResult Put(int id)
+        {
+            string username = RequestContext.Principal.Identity.Name;
+            username = username.Substring(username.LastIndexOf('\\') + 1);
+
+            if(DBObject.ApplyLevelToken(id, username))
+            {
+                return Ok();
+            }
+            else
+            {
+                return InternalServerError();
+            }
+        }
+
+        /// <summary>
         /// Delete a character.
         /// TODO: Pass in a username and check for character ownership.
         /// Username should be retrieved from the controller. Not the front-end.

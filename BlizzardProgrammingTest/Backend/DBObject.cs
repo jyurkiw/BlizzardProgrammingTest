@@ -291,6 +291,24 @@ namespace BlizzardProgrammingTest.Backend
             return DBObject.Instance.raceClassTable.Where(r => r.Faction == character.Faction && r.Race == character.Race && r.Class == character.Class).Count() >= 1;
         }
 
+        public static bool ApplyLevelToken(int id, string username)
+        {
+            CharacterRowModel character = DBObject.Instance.characterTable.Where(c => c.Id == id).FirstOrDefault();
+
+            if (character != null && character.Owner.CompareTo(username) == 0)
+            {
+                int characterIndex = DBObject.Instance.characterTable.IndexOf(character);
+                DBObject.Instance.characterTable[characterIndex].Level = BackendConstants.QueryProperties.LevelTokenLevel;
+                DBObject.Instance.SaveCharacterDataToFile();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Delete a character by ID.
         /// TODO: Pass in a username and check for character ownership.

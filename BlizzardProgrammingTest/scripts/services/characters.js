@@ -77,6 +77,19 @@ characterServices.factory('CharacterAPI', ['$http', function($http) {
         });
     }
 
+    var applyLevelToken = function (id) {
+        return new Promise(function (resolve, reject) {
+            // Apply a level token
+            $http.put('http://localhost:53653/api/Characters/' + id)
+                .then(function (response) {
+                    resolve(response.data);
+                })
+                .catch(function (err) {
+                    reject(err);
+                });
+        });
+    }
+
     /**
         Delete a character for the user.
 
@@ -119,6 +132,7 @@ characterServices.factory('CharacterAPI', ['$http', function($http) {
         getCharactersForUser: getCharactersForUser,
         getDeletedCharactersForUser: getDeletedCharactersForUser,
         addCharacterForUser: addCharacterForUser,
+        applyLevelToken: applyLevelToken,
         deleteCharacterForUser: deleteCharacterForUser,
         undeleteCharacterForUser: undeleteCharacterForUser
     }

@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="img\100_coin.png" />
     <Content Include="img\alliance-block-bkrnd.png" />
     <Content Include="img\alliance_logo.png" />
     <Content Include="img\horde_logo.png" />

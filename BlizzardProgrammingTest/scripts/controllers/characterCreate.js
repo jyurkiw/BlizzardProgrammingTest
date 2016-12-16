@@ -249,6 +249,24 @@ characterApp.controller('character-create-controller', function ($scope, $rootSc
         load the race/class data for the character creation form.
     */
     $rootScope.$on('UsernameLoaded', function () {
+        LoadRaceClassData();
+    });
+    
+    /**
+        Level Token signal handler.
+        Whena level token is used, reload class and race data from the backend.
+        We have to do this because it might enable Death Knights.
+    */
+    $rootScope.$on('LevelTokenUsed', function () {
+        LoadRaceClassData();
+    });
+
+    /**
+        Load Race and Class data from the DB.
+
+        @memberof CharacterCreation
+    */
+    function LoadRaceClassData() {
         RaceAPI.getRaceClassData($scope.userData.username)
             .then(function (data) {
                 raceClassData = data;
@@ -266,5 +284,5 @@ characterApp.controller('character-create-controller', function ($scope, $rootSc
                 $scope.wowClasses = raceClassData[DEFAULT_FACTION][DEFAULT_RACE];
                 $scope.$apply();
             });
-    });
+    }
 });

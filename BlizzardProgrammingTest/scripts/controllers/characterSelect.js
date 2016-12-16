@@ -40,6 +40,21 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
     }
 
     /**
+        Level One Hundred Coin Click Handler.
+        Change the level of a character to 100.
+
+        @memberof CharacterSelect
+        @param id Int The id of the character.
+    */
+    $scope.oneHundredCoinClickHandler = function (id) {
+        CharacterAPI.applyLevelToken(id)
+            .then(function(results) {
+                $rootScope.$emit('LevelTokenUsed');
+                LoadCharacterList();
+            });
+    }
+
+    /**
         New Character Button Click Handler.
         Set the app state to character create.
 
@@ -169,5 +184,21 @@ characterApp.controller('character-select-controller', function ($scope, $rootSc
         }
 
         return null;
+    }
+
+    /**
+        Get the character with the passed id.
+
+        @memberof CharacterSelect
+        @param int id The id of the character.
+        @return Object The character, or null if no character with that ID exists.
+    */
+    function getCharacterById(id) {
+        var idx = $scope.characterList.map(function (e) { return e.id; }).indexOf(target.id);
+        if (idx !== -1) {
+            return $scope.characterList[idx];
+        } else {
+            return null;
+        }
     }
 });

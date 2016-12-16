@@ -43,6 +43,7 @@ namespace BlizzardProgrammingTest.Backend
             public const string RaceClassQueryPath = "bin\\Data\\raceClassJoinQuery.json";
             public const string CharacterPath = "bin\\Data\\charactersQuery.json";
             public const int DeathKnightMinLevelReq = 55;
+            public const int LevelTokenLevel = 100;
         }
 
         public static class RaceClassFieldNames

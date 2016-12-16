@@ -12,6 +12,7 @@
             <ul class="character-list">
                 <li ng-repeat="character in characterList">
                     <div class="character-block {{ characterBlockClass(character) }}" ng-class="{ 'selected-block': character.selected }" ng-click="characterBlockClickHandler(character.id)">
+                        <img class="character-block-token" ng-if="character.level < 100" src="img/100_coin.png" ng-click="oneHundredCoinClickHandler(character.id)" />
                         <div class="character-block-name">{{ character.name }}</div>
                         <div class="character-block-level">Level {{ character.level }}</div>
                         <div class="character-block-race">{{ character.race }} {{ character.class }}</div>
